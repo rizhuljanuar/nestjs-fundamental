@@ -1,0 +1,44 @@
+### Create a new user
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Test with invalid email
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+  "email": "notanemail",
+  "password": "password123"
+}
+
+### Test with non-string password
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": 123456
+}
+
+### Test with missing password
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+  "email": "test@example.com"
+}
+
+### Test whitelist with extra property
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123",
+  "admin": true
+}

@@ -7,42 +7,46 @@ import { User } from './user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private repo: Repository<User>,
   ) {}
 
   // CREATE
   async create(email: string, password: string) {
     // 1. Create instance di memory
-    const user = this.usersRepository.create({ email, password });
+    const user = this.repo.create({ email, password });
 
     // 2. Save ke database
-    return await this.usersRepository.save(user);
+    return await this.repo.save(user);
   }
 
   // FIND ONE
-  async findOne(id: number) {
-    return await this.usersRepository.findOne({ where: { id } });
+  findOne(id: number) {
+    return this.repo.findOneBy({ id });
   }
 
   // FIND BY EMAIL
-  async findByEmail(email: string) {
-    return await this.usersRepository.find({ where: { email } });
+  find(email: string) {
+    return this.repo.find({ where: { email } });
+  }
+
+  findAll() {
+    return this.repo.find();
   }
 
   // UPDATE
   async update(id: number, attrs: Partial<User>) {
-    const user = await this.usersRepository.findOne({ where: { id } });
+    const user = await this.findOne(id);
     if (!user) throw new Error('User not found');
 
     Object.assign(user, attrs);
-    return await this.usersRepository.save(user);
+    return await this.repo.save(user);
   }
 
   // DELETE
   async remove(id: number) {
-    const user = await this.usersRepository.findOne({ where: { id } });
+    const user = await this.findOne(id);
     if (!user) throw new Error('User not found');
 
-    return await this.usersRepository.remove(user);
+    return await this.repo.remove(user);
   }
 }

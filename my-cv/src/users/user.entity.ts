@@ -11,6 +11,12 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ default: 0 })
+  age: number;
+
+  @Column({ default: '' })
+  name: string;
+
   // HOOK: setelah Insert
   @AfterInsert()
   logInsert() {
